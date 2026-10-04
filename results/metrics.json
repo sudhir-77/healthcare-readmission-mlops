@@ -1,0 +1,170 @@
+{
+  "project": "healthcare-readmission-mlops",
+  "success_criteria": [
+    {
+      "name": "Test AUROC (30-day readmission)",
+      "value": 0.6813792057328326,
+      "op": ">=",
+      "threshold": 0.66,
+      "threshold_high": null,
+      "passed": true
+    },
+    {
+      "name": "Test AUROC (30-day readmission) lift over baseline",
+      "value": 0.019085083014274695,
+      "op": ">=",
+      "threshold": 0.01,
+      "threshold_high": null,
+      "passed": true
+    },
+    {
+      "name": "Expected calibration error",
+      "value": 0.005493943244526478,
+      "op": "<=",
+      "threshold": 0.03,
+      "threshold_high": null,
+      "passed": true
+    },
+    {
+      "name": "Covariate balance after weighting",
+      "value": 0.02857282477751592,
+      "op": "<",
+      "threshold": 0.1,
+      "threshold_high": null,
+      "passed": true
+    },
+    {
+      "name": "Scoring API p95 latency",
+      "value": 6.698775002587354,
+      "op": "<",
+      "threshold": 100.0,
+      "threshold_high": null,
+      "passed": true
+    },
+    {
+      "name": "Test coverage of src/",
+      "value": 88.25214899713467,
+      "op": ">=",
+      "threshold": 75.0,
+      "threshold_high": null,
+      "passed": true
+    }
+  ],
+  "metrics": {
+    "data": {
+      "n_raw": 101766,
+      "n_cohort": 99343,
+      "n_excluded_discharge": 2423,
+      "n_patients_raw": 71518,
+      "cohort_readmit_30_rate": 0.11388824577474005,
+      "cohort_med_change_rate": 0.464270255579155,
+      "quick_mode": false
+    },
+    "test": {
+      "lightgbm_calibrated": {
+        "auroc": 0.6813792057328326,
+        "ece": 0.005493943244526478,
+        "brier": 0.09691885438899868,
+        "prevalence": 0.11511411889596602
+      },
+      "logistic_regression": {
+        "auroc": 0.6622941227185579,
+        "ece": 0.007327836054714249,
+        "brier": 0.09786223111168597
+      }
+    },
+    "val": {
+      "lightgbm_raw_auroc": 0.6758713937925607,
+      "lightgbm_calibrated_auroc": 0.6797248363649135
+    },
+    "model": {
+      "selected_params": {
+        "num_leaves": 31,
+        "min_child_samples": 40,
+        "learning_rate": 0.05,
+        "n_estimators": 300,
+        "early_stopping_rounds": 30
+      },
+      "mlflow_model_name": "readmission_30day"
+    },
+    "causal": {
+      "estimand": "encounter-level ATE of diabetes medication change on 30-day readmission",
+      "n": 84271,
+      "n_treated": 39081,
+      "ipw_risk_difference": 0.007092148228606043,
+      "aipw_risk_difference": 0.008060354639866983,
+      "naive_risk_difference": 0.010865179048724097,
+      "ipw_ci95": [
+        0.002062662329659777,
+        0.011755002774594741
+      ],
+      "aipw_ci95": [
+        0.004128876976854863,
+        0.012314887843538114
+      ],
+      "max_smd_weighted": 0.02857282477751592,
+      "max_smd_unweighted": 0.22599113999404483,
+      "propensity_min": 0.08381460094774339,
+      "propensity_max": 0.9952969376520868,
+      "overlap_frac": 0.9998101363458366,
+      "clip": 0.05,
+      "c_value": 1.0,
+      "used_squares": false,
+      "n_bootstrap": 200
+    },
+    "service": {
+      "p50_ms": 6.145949999336153,
+      "p95_ms": 6.698775002587354,
+      "max_ms": 7.806900001014583,
+      "mean_ms": 6.197348599875113,
+      "n_requests": 500
+    },
+    "coverage": {
+      "line_percent": 88.25214899713467
+    },
+    "display": {
+      "n_raw": 101766,
+      "n_cohort": 99343,
+      "test_auroc": 0.681,
+      "test_ece": 0.005,
+      "baseline_auroc": 0.662,
+      "p95_ms": 6.7,
+      "n_requests": 500,
+      "ipw_pp": 0.71,
+      "aipw_pp": 0.81,
+      "aipw_ci_low_pp": 0.41,
+      "aipw_ci_high_pp": 1.23,
+      "max_smd": 0.029
+    }
+  },
+  "baseline": {
+    "model": "l2_logistic_regression",
+    "test_auroc": 0.6622941227185579,
+    "test_ece": 0.007327836054714249,
+    "causal_naive_risk_difference": 0.010865179048724097
+  },
+  "splits": {
+    "encounters": {
+      "train": 69579,
+      "val": 14692,
+      "test": 15072
+    },
+    "patients": {
+      "train": 48994,
+      "val": 10498,
+      "test": 10498
+    }
+  },
+  "seeds": [
+    0
+  ],
+  "hardware": {
+    "cpu": "Intel64 Family 6 Model 141 Stepping 1, GenuineIntel",
+    "ram_gb": 15.73,
+    "gpu": null,
+    "python": "3.12.10",
+    "os": "Windows-11-10.0.26200-SP0",
+    "requested_device": "cpu"
+  },
+  "runtime_seconds": 57.86347700000624
+}
