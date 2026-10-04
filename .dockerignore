@@ -1,0 +1,11 @@
+.venv
+data
+mlruns
+mlflow.db
+.git
+.cursor
+**/__pycache__
+.pytest_cache
+.coverage
+htmlcov
+logs
